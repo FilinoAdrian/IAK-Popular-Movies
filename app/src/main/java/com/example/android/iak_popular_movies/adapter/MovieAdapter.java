@@ -47,6 +47,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .into(holder.img);
 
         holder.originalTitle.setText(movieList.get(position).getOriginalTitle());
+        holder.overview = movieList.get(position).getOverview();
+        holder.thn = movieList.get(position).getReleaseDate();
+        holder.backdrop = "https://image.tmdb.org/t/p/w780" + movieList.get(position).getBackdropPath();
+        holder.vote = movieList.get(position).getVoteAverage();
     }
 
     @Override
@@ -66,6 +70,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         public TextView originalTitle;
         public ImageView img;
+        public String overview;
+        public String backdrop;
+        public String thn;
+        public String vote;
 
         public MovieViewHolder(View view) {
             super(view);
@@ -78,6 +86,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View view) {
             Intent i = new Intent(view.getContext(), DetailActivity.class);
+
+            i.putExtra("judul", originalTitle.getText().toString());
+            i.putExtra("deskripsi", overview);
+            i.putExtra("tahun", thn);
+            i.putExtra("latar", backdrop);
+            i.putExtra("vote", vote);
+
             view.getContext().startActivity(i);
         }
     }
