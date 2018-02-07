@@ -1,6 +1,10 @@
 package com.example.android.iak_popular_movies;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public Activity getActivity(){
+        Context context = this;
+        while (context instanceof ContextWrapper){
+            if (context instanceof Activity){
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
+
     public void initViews(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
@@ -47,10 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        GridLayoutManager layoutManager =
-                new GridLayoutManager(MainActivity.this, 2);
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+        } else {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 4));
+        }
 
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
         mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
