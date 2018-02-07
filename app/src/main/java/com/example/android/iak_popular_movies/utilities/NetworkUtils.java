@@ -1,6 +1,6 @@
 package com.example.android.iak_popular_movies.utilities;
 
-import android.net.Uri;
+import com.example.android.iak_popular_movies.BuildConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,15 +15,14 @@ import java.util.Scanner;
 
 public final class NetworkUtils {
 
-    private static final String MOVIE_BASE_URL =
-            "https://api.themoviedb.org/3/movie/popular?api_key=fe94760a7208037278ffbc90055bc329";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
 
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon().build();
+    public static URL buildUrl(String category) {
+        String urlRequest = BASE_URL + category + "?api_key=" + BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
         URL url = null;
         try {
-            url = new URL(builtUri.toString());
+            url = new URL(urlRequest);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
